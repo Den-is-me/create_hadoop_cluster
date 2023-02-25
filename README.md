@@ -79,5 +79,5 @@ aah 1
 ab 1
 ```
 
-As a result we had have the file in dfs, which include each word with a count of repetitions.
+As a result we had have [the file](/WordCount) in dfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
