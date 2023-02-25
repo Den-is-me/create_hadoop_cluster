@@ -1,5 +1,5 @@
-# Simple Hadoop MapReduce jobs
-*This repository is designed to store typical MapReduce jobs.*
+# Hadoop MapReduce jobs
+*This repository is designed to store simple MapReduce jobs.*
 
 For testing, I use single machine with Oracle VM Virtual Box, Ubuntu, RAM 4096 mb, 3 CPUs and [the text file of the novel "War and Peace"](/War_and_Peace.txt). Hadoop version 3.3.4
 ___
