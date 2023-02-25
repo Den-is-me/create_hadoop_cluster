@@ -7,9 +7,9 @@ ___
 - [Word Count](#word-count)
 ## Word Count
 This standard job counts how many times each word occurs in a text.
-I have created a python API for mapper and reducer:
+First of all, I have created a python API for mapper and reducer:
 
-**MapCount**
+**MapCount.py**
 ```python
 #!/usr/bin/python
 
@@ -23,7 +23,7 @@ for line in sys.stdin:
             print(i[0].lower() + '\t1')
             
 ```
-**ReduceCount**
+**ReduceCount.py**
 ```python
 #!/usr/bin/python
 
@@ -71,7 +71,7 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -mapper MapCount.py\
 -reducer ReduceCount.py
 ```
-With succsess , the file is in dfs
+With succsess, the file is in dfs
 ```shell
 $ hdfs dfs -cat /tmp/WordCount/part-00000 | head -n 3
 a 10442
