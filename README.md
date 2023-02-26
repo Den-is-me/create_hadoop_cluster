@@ -7,7 +7,7 @@ ___
 - [Word Count](#word-count)
 - [TF-IDF](#tf-idf)
 ## Word Count
-This standard job counts how many times each word occurs in a text.
+This standard job counts how many times each word appears in a text.
 First of all, I have created a python API for mapper and reducer:
 
 **MapCount.py**
@@ -84,4 +84,6 @@ As a result we had have [the file](/WordCount) in dfs, which include each word w
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## TF-IDF
-### Term Frequency - Inverse Document Frequency
+### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
+
+This is done by multiplying two metrics: how many times a word appears in a document, and the inverse document frequency of the word across a set of documents.
