@@ -5,6 +5,7 @@ For testing, I use single machine with Oracle VM Virtual Box, Ubuntu, RAM 4096 m
 ___
 ## Jobs
 - [Word Count](#word-count)
+- [TF-IDF](#tf-idf)
 ## Word Count
 This standard job counts how many times each word occurs in a text.
 First of all, I have created a python API for mapper and reducer:
@@ -81,3 +82,6 @@ ab 1
 
 As a result we had have [the file](/WordCount) in dfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
+___
+## TF-IDF
+### Term Frequency - Inverse Document Frequency
