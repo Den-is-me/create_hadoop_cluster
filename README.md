@@ -36,7 +36,7 @@ for line in sys.stdin:
     key, value = line.split()
     if last_key and key != last_key:
         print(last_key + '\t' + str(sum))
-        last_key, sum = key, 0
+        last_key, sum = key, 1
     else:
         last_key, sum = key, sum + int(value)
 if last_key:
@@ -80,10 +80,58 @@ aah 1
 ab 1
 ```
 
-As a result we had have [the file](/WordCount) in dfs, which include each word with a count of repetitions.
+As a result we had have [the file](/WordCount) in hdfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## TF-IDF
 ### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
 
 This is done by multiplying two metrics: how many times a word appears in a document, and the inverse document frequency of the word across a set of documents.
+As set of documents, I used 4 different books in txt format: ['War and Peace'](/War_and_Peace.txt), ['Gone with the wind'](/TF-IDF/Gone_with_the_Wind.txt), ['Harry Potter and philosopher's stone'](/TF-IDF/Harry_Potter_and_PS.txt) and ['Bible'](/TF-IDF/Bible.txt).
+The main job consists of 3 phases:
+- 'TF' how many times a word appears in a document, like a previous job 'Word Count', but with some update.
+- 'IDF' this means, how common or rare a word is in the entire document set. The closer it is to 0, the more common a word is. This metric can be calculated by taking the total number of documents, dividing it by the number of documents that contain a word, and calculating the logarithm.
+- Combine the two previous results in the evaluation of TF-IDF words in the document. The higher the score, the more relevant that word is in that particular document.
+
+### Firts phase
+I have taken previous Word Count Mapper and Reducer to change them for this task. Because now stdout should be with document's id.
+
+**MapCount.py**
+
+```python
+#!/usr/bin/python
+
+import sys
+import re
+import os
+
+for line in sys.stdin:
+    file = os.environ['map_input_file']
+    file = re.search(r'\w+[^.txt]', os.path.split(file)[-1])[0]
+    for i in line.split():
+        i = re.search(r'[a-zA-Z]+', i)
+        if i:
+            print(i[0].lower() + '#' + file + '\t1')
+            
+```
+**ReduceCount.py**
+```python
+#!/usr/bin/python
+
+import sys
+
+last_key, sum = None, 0
+
+for line in sys.stdin:
+    key, value = line.split()
+    if last_key and key != last_key:
+        last_key = last_key.split('#')
+        print(f'{last_key[0]}\t{last_key[1]}\t{str(sum)}')
+        last_key, sum = key, 1
+    else:
+        last_key, sum = key, sum + 1
+if last_key:
+    last_key = last_key.split('#')
+    print(f'{last_key[0]}\t{last_key[1]}\t{str(sum)}')
+    
+```
