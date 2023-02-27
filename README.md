@@ -80,7 +80,7 @@ aah 1
 ab 1
 ```
 
-As a result we had have [the file](/WordCount) in hdfs, which include each word with a count of repetitions.
+As a result we had have [the file](/Word_Count/WordCount) in hdfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## TF-IDF
@@ -135,3 +135,13 @@ if last_key:
     print(f'{last_key[0]}\t{last_key[1]}\t{str(sum)}')
     
 ```
+Then I started yarn jar with books that were prepared in hdfs 
+```shell
+$ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
+-files MapCount.py,ReduceCount.py\
+-input /tmp/War_and_Peace.txt /tmp/Gone_with_the_Wind.txt /tmp/Harry_Potter_and_PS.txt /tmp/Bible.txt\
+-output /tmp/WordCount\
+-mapper MapCount.py\
+-reducer ReduceCount.py
+```
+As the result I have had [the TF file](/TF-IDF/TF) for next phase.
