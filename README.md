@@ -140,7 +140,7 @@ Then I started yarn jar with books that were prepared in hdfs
 $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -files MapCount.py,ReduceCount.py\
 -input /tmp/War_and_Peace.txt /tmp/Gone_with_the_Wind.txt /tmp/Harry_Potter_and_PS.txt /tmp/Bible.txt\
--output /tmp/WordCount\
+-output /tmp/TF\
 -mapper MapCount.py\
 -reducer ReduceCount.py
 ```
@@ -148,3 +148,62 @@ As the result I have had [the TF file](/TF-IDF/TF) for next phase.
 
 ### Second phase
 The second step is to give information about how many books a word contains.
+
+[**MapIDF.py**](/TF-IDF/MapIDF.py)
+```python
+#!/usr/bin/python
+import sys
+
+d = []
+last_key = None
+
+for line in sys.stdin:
+    key, value = line.split()
+    v1, v2 = value.split(';')[:2]
+    if last_key and last_key != key:
+        for i in d:
+             print(last_key + '#' + "\t".join(i) + '\t' + str(len(d)))
+        last_key = key
+        d = [[v1, v2]]
+    else:
+        last_key = key
+        d.append([v1, v2])
+if last_key:
+    for i in d:
+        print(last_key + '#' + "\t".join(i) + '\t' + str(len(d)))
+```
+[**ReduceIDF.py**](/TF-IDF/ReduceIDF.py)
+```python
+#!/usr/bin/python
+import sys
+
+d = []
+last_key = None
+
+for line in sys.stdin:
+    key, value = line.split()
+    v1, v2 = value.split(';')[:2]
+    if last_key and last_key != key:
+        for i in d:
+             print(last_key + '#' + "\t".join(i) + '\t' + str(len(d)))
+        last_key = key
+        d = [[v1, v2]]
+    else:
+        last_key = key
+        d.append([v1, v2])
+if last_key:
+    for i in d:
+        print(last_key + '#' + "\t".join(i) + '\t' + str(len(d)))
+        
+```
+
+Run jar
+
+```shell
+$ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
+-files MapIDF.py,ReduceIDF.py\
+-input /tmp/TF/part-00000\
+-output /tmp/IDF/\
+-mapper MapIDF.py\
+-reducer ReduceIDF.py
+```
