@@ -46,7 +46,7 @@ checked workers with test file
 ```shell
 $ cat ./test.txt | ./MapCount.py | sort | ./ReduceCount.py
 ```
-Then I started hdfs
+Then I started hadoop
 ```shell
 $ start-dfs.sh
 $ start-yarn.sh
@@ -59,7 +59,7 @@ $ jps
 14446 NodeManager
 13759 NameNode
 ```
-and put the file in dfs.
+and put the file in hdfs.
 ```shell
 $ hdfs dfs -put War_and_Peace.txt /tmp
 ```
@@ -72,7 +72,7 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -mapper MapCount.py\
 -reducer ReduceCount.py
 ```
-With succsess, the file is in dfs
+With succsess, the file is in hdfs
 ```shell
 $ hdfs dfs -cat /tmp/WordCount/part-00000 | head -n 3
 a 10442
@@ -145,3 +145,6 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -reducer ReduceCount.py
 ```
 As the result I have had [the TF file](/TF-IDF/TF) for next phase.
+
+### Second phase
+The second step is to give information about how many books a word contains.
