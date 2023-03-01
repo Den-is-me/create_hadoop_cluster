@@ -209,7 +209,7 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 ```
 
 ### Third phase
-Finally I took the TF for each word in every book and got TF-IDF with format:
+Finally I calculated the TF for each word in every book and got TF-IDF with format:
 ```
 word#Book_name  TF-IDF
 ```
