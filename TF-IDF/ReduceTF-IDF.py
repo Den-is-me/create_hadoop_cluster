@@ -20,7 +20,8 @@ for line in sys.stdin:
         last_key = key
         total_words += int(count)
 
-if last_key and key != last_key:
-    TF = int(i[1]) / total_words
-    TF_IDF = TF * log(num_books / int(i[2]))
-    print(i[0] + '#' + last_key + '\t' + str(TF_IDF))
+if last_key:
+    for i in d:
+        TF = int(i[1]) / total_words
+        TF_IDF = TF * log(num_books / int(i[2]))
+        print(i[0] + '#' + last_key + '\t' + str(TF_IDF))
