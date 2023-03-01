@@ -277,3 +277,69 @@ letting#War_and_Peace	0.0
 *Fun fact: the most relevant word in War and Peace is 'Wittgenstein', it's a character, he was the commander of a separate corps in the St. Petersburg direction - during the Patriotic War of 1812 *
 ___
 ## Cross Correlation
+Cross correlation detects the number of times two things occur together.
+[The Harry Potter](/TF-IDF/Harry_Potter_and_PS.txt) book is a set of sentences. For each possible pair of words, I have counted the number of sentences in which these words occur together.
+
+[**MapCross.py**](/Cross_Correlation/MapCross.py)
+```python
+#!/usr/bin/python
+
+import sys
+import re
+
+
+for line in sys.stdin:
+    d = {}
+    line = line.strip().split()
+    for word in line:
+        word = re.search(r'[a-zA-Z]+', word)
+        if word:
+            word = word[0]
+            for pair in line:
+                pair = re.search(r'[a-zA-Z]+', pair)
+                if pair:
+                    pair = pair[0]
+                    if pair != word:
+                        d[pair] = d.get(pair, 0) + 1
+            if d:
+                print(word + '\t' + ','.join([f'{k}:{v}' for k, v in d.items()]))
+                d = {}
+                
+```
+
+[**ReduceCross.py**](Cross_Correlation/ReduceCross.py)
+```pyton
+#!/usr/bin/python
+import sys
+
+last_word = '!'
+d = {}
+
+for line in sys.stdin:
+    word, keys = line.split()
+    if last_word and word != last_word:
+        for i in d.keys():
+            print(last_word + '#' + i + '\t' + str(d[i]))
+        last_word = word
+        d = {}
+    else:
+        for pair in keys.split(','):
+            pair = pair.split(':')
+            d[pair[0]] = d.get(pair[0], 0) + int(pair[1])
+        last_word = word
+if last_word:
+    for i in d.keys():
+        print(last_word + '#' + i + '\t' + str(d[i]))
+
+```
+And run hadoop-streaming for result
+
+```shell
+$ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
+-files MapCross.py,ReduceCross.py\
+-input /tmp/Harry_Potter_and_PS.txt\
+-output /tmp/Cross_Correlation/\
+-mapper MapCross.py\
+-reducer ReduceCross.py
+```
+As the result I have had [this file](/Cross_Correlation/Cross_Correlation) in hdfs.
