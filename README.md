@@ -6,6 +6,7 @@ ___
 ## Jobs
 - [Word Count](#word-count)
 - [TF-IDF](#tf-idf)
+- [Cross-Correlation](#cross-correlation)
 ## Word Count
 This standard job counts how many times each word appears in a text.
 First of all, I have created a python for mapper and reducer in hadoop-streaming:
@@ -274,3 +275,5 @@ levee#War_and_Peace	6.15972043259911e-06
 letting#War_and_Peace	0.0
 ```
 *Fun fact: the most relevant word in War and Peace is 'Wittgenstein', it's a character, he was the commander of a separate corps in the St. Petersburg direction - during the Patriotic War of 1812 *
+___
+## Cross Correlation
