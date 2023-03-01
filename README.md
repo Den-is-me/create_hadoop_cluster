@@ -273,3 +273,4 @@ level#War_and_Peace	6.135635915046557e-06
 levee#War_and_Peace	6.15972043259911e-06
 letting#War_and_Peace	0.0
 ```
+*Fun fact: the most relevant word in War and Peace is 'Wittgenstein', it's a character, he was the commander of a separate corps in the St. Petersburg direction - during the Patriotic War of 1812 *
