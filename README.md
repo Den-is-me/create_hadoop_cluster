@@ -312,7 +312,7 @@ for line in sys.stdin:
 #!/usr/bin/python
 import sys
 
-last_word = '!'
+last_word = None
 d = {}
 
 for line in sys.stdin:
