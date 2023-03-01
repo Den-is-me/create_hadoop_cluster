@@ -8,7 +8,7 @@ ___
 - [TF-IDF](#tf-idf)
 ## Word Count
 This standard job counts how many times each word appears in a text.
-First of all, I have created a python API for mapper and reducer:
+First of all, I have created a python for mapper and reducer in hadoop-streaming:
 
 **MapCount.py**
 ```python
@@ -89,7 +89,7 @@ ___
 This is done by multiplying two metrics: how many times a word appears in a document, and the inverse document frequency of the word across a set of documents.
 As set of documents, I used 4 different books in txt format: ['War and Peace'](/War_and_Peace.txt), ['Gone with the wind'](/TF-IDF/Gone_with_the_Wind.txt), ['Harry Potter and philosopher's stone'](/TF-IDF/Harry_Potter_and_PS.txt) and ['Bible'](/TF-IDF/Bible.txt).
 The main job consists of 3 phases:
-- 'TF' how many times a word appears in a document, like a previous job 'Word Count', but with some update.
+- 'TF' the term frequency of a word in a document. There are several ways of calculating this frequency, with the simplest being a raw count of instances a word appears in a document. Then, there are ways to adjust the frequency, by length of a document, or by the raw frequency of the most frequent word in a document.
 - 'IDF' this means, how common or rare a word is in the entire document set. The closer it is to 0, the more common a word is. This metric can be calculated by taking the total number of documents, dividing it by the number of documents that contain a word, and calculating the logarithm.
 - Combine the two previous results in the evaluation of TF-IDF words in the document. The higher the score, the more relevant that word is in that particular document.
 
@@ -140,11 +140,11 @@ Then I started yarn jar with books that were prepared in hdfs
 $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -files MapCount.py,ReduceCount.py\
 -input /tmp/War_and_Peace.txt /tmp/Gone_with_the_Wind.txt /tmp/Harry_Potter_and_PS.txt /tmp/Bible.txt\
--output /tmp/TF\
+-output /tmp/WordCount\
 -mapper MapCount.py\
 -reducer ReduceCount.py
 ```
-As the result I have had [the TF file](/TF-IDF/TF) for next phase.
+As the result I have had [the WordCount file](/TF-IDF/WordCount) for next phase.
 
 ### Second phase
 The second step is to give information about how many books a word contains.
@@ -202,8 +202,16 @@ Run jar
 ```shell
 $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -files MapIDF.py,ReduceIDF.py\
--input /tmp/TF/part-00000\
+-input /tmp/WordCount/part-00000\
 -output /tmp/IDF/\
 -mapper MapIDF.py\
 -reducer ReduceIDF.py
 ```
+
+### Third phase
+Finally I took the TF for each word in every book and got TF-IDF with format:
+```
+word#Book_name  TF-IDF
+```
+**MapTF-IDF.py**
+```python
