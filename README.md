@@ -197,7 +197,7 @@ if last_key:
         
 ```
 
-Run jar
+Run hadoop-streaming
 
 ```shell
 $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
@@ -213,5 +213,63 @@ Finally I took the TF for each word in every book and got TF-IDF with format:
 ```
 word#Book_name  TF-IDF
 ```
-**MapTF-IDF.py**
+[**MapTF-IDF.py**](/TF-IDF/MapTF-IDF.py)
 ```python
+#!/usr/bin/python
+
+import sys
+
+for line in sys.stdin:
+    line = line.split()
+    word, book = line[0].split('#')
+    print(book + '\t' + word + ';' + line[1] + ';' + line[2])
+```
+
+[**ReduceTF-IDF.py**](/TF-IDF/ReduceTF-IDF.py)
+```python
+#!/usr/bin/python
+import sys
+from math import log
+
+d = []
+last_key = None
+total_words = 0
+num_books = 4
+for line in sys.stdin:
+    key, value = line.split()
+    word, count, w_in_b = value.split(';')
+    if last_key and key != last_key:
+        for i in d:
+            TF = int(i[1]) / total_words
+            TF_IDF = TF * log(num_books / int(i[2]))
+            print(i[0] + '#' + last_key + '\t' + str(TF_IDF))
+        d, last_key, total_words = [], key, int(count)
+    else:
+        d.append([word, count, w_in_b])
+        last_key = key
+        total_words += int(count)
+
+if last_key:
+    for i in d:
+        TF = int(i[1]) / total_words
+        TF_IDF = TF * log(num_books / int(i[2]))
+        print(i[0] + '#' + last_key + '\t' + str(TF_IDF))
+```
+
+Run hadoop-streaming
+
+```shell
+$ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
+-files MapTF-IDF.py,ReduceTF-IDF.py\
+-input /tmp/IDF/part-00000\
+-output /tmp/TF-IDF/\
+-mapper MapTF-IDF.py\
+-reducer ReduceTF-IDF.py
+```
+As the result, I received [the TF-IDF file](/TF-IDF/TF-IDF) with these rows:
+```shell
+lever#War_and_Peace	4.927776346079288e-06
+level#War_and_Peace	6.135635915046557e-06
+levee#War_and_Peace	6.15972043259911e-06
+letting#War_and_Peace	0.0
+```
