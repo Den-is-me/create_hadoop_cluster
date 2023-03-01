@@ -308,7 +308,7 @@ for line in sys.stdin:
 ```
 
 [**ReduceCross.py**](Cross_Correlation/ReduceCross.py)
-```pyton
+```python
 #!/usr/bin/python
 import sys
 
