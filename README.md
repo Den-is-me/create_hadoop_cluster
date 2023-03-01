@@ -274,7 +274,7 @@ level#War_and_Peace	6.135635915046557e-06
 levee#War_and_Peace	6.15972043259911e-06
 letting#War_and_Peace	0.0
 ```
-*Fun fact: the most relevant word in War and Peace is 'Wittgenstein', it's a character, he was the commander of a separate corps in the St. Petersburg direction - during the Patriotic War of 1812 *
+*Fun fact: the most relevant word in War and Peace is 'Wittgenstein', it's a character, he was the commander of a separate corps in the St. Petersburg direction - during the Patriotic War of 1812*
 ___
 ## Cross Correlation
 Cross correlation detects the number of times two things occur together.
@@ -343,3 +343,5 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -reducer ReduceCross.py
 ```
 As the result I have had [this file](/Cross_Correlation/Cross_Correlation) in hdfs.
+*Fun fact: this file can tell us that Ron and Hermione occur together in 48 sentences.*
+
