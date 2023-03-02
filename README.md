@@ -9,7 +9,7 @@ ___
 - [Cross-Correlation](#cross-correlation)
 ## Word Count
 This standard job counts how many times each word appears in a text.
-First of all, I have created a python for mapper and reducer in hadoop-streaming:
+First of all, I have created a python files for mapper and reducer in hadoop-streaming:
 
 **MapCount.py**
 ```python
@@ -81,7 +81,7 @@ aah 1
 ab 1
 ```
 
-As a result we had have [the file](/Word_Count/WordCount) in hdfs, which include each word with a count of repetitions.
+As a result we have had [the file](/Word_Count/WordCount) in hdfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## TF-IDF
@@ -210,7 +210,7 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 ```
 
 ### Third phase
-Finally I calculated the TF for each word in every book and got TF-IDF with format:
+Finally I have calculated the TF for each word in every book and got TF-IDF with format:
 ```
 word#Book_name  TF-IDF
 ```
@@ -267,7 +267,7 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -mapper MapTF-IDF.py\
 -reducer ReduceTF-IDF.py
 ```
-As the result, I received [the TF-IDF file](/TF-IDF/TF-IDF) with these rows:
+As the result, I have received [the TF-IDF file](/TF-IDF/TF-IDF) with these rows:
 ```shell
 lever#War_and_Peace	4.927776346079288e-06
 level#War_and_Peace	6.135635915046557e-06
