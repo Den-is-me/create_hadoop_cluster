@@ -84,6 +84,7 @@ ab 1
 ```
 
 As a result we have had [the file](/Word_Count/WordCount) in hdfs, which include each word with a count of repetitions.
+
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## Inverted Index
@@ -131,17 +132,19 @@ for line in sys.stdin:
 if last_word:
     print(last_word + '\t' + ';'.join(list(words_in_books)))
 ```
-Run hdoop-streaming
+I have run hdoop-streaming
 
 ```shell
 $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
--files MapCount.py,ReduceCount.py\
+-files MapIndex.py,ReduceIndex.py\
 -input /tmp/War_and_Peace.txt /tmp/Gone_with_the_Wind.txt /tmp/Harry_Potter_and_PS.txt /tmp/Bible.txt\
--output /tmp/WordCount\
--mapper MapCount.py\
--reducer ReduceCount.py
+-output /tmp/Inverted_Index\
+-mapper MapIndex.py\
+-reducer ReduceIndex.py
 ```
+and got [the right file](/Inverted_Index/InvertedIndex) in hdfs.
 
+*Fun fact: the word "god" appears in every book except Harry Potter. In the same time, the word "joke" appears in every book except Bible*
 ___
 ## TF-IDF
 ### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
@@ -402,5 +405,6 @@ $ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
 -reducer ReduceCross.py
 ```
 As the result I have had [this file](/Cross_Correlation/Cross_Correlation) in hdfs.
+
 *Fun fact: this file can tell us that Ron and Hermione occur together in 48 sentences.*
 
