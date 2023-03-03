@@ -94,6 +94,7 @@ I have taken 4 books in txt format: ['War and Peace'](/War_and_Peace.txt), ['Gon
 word    book_1.txt;book_2.txt...
 ```
 I have created Mapper and Reducer for this task:
+
 [**MapIndex.py**](/Inverted_Index/MapIndex.py)
 ```python
 #!/usr/bin/python
@@ -130,6 +131,17 @@ for line in sys.stdin:
 if last_word:
     print(last_word + '\t' + ';'.join(list(words_in_books)))
 ```
+Run hdoop-streaming
+
+```shell
+$ yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.4.jar\
+-files MapCount.py,ReduceCount.py\
+-input /tmp/War_and_Peace.txt /tmp/Gone_with_the_Wind.txt /tmp/Harry_Potter_and_PS.txt /tmp/Bible.txt\
+-output /tmp/WordCount\
+-mapper MapCount.py\
+-reducer ReduceCount.py
+```
+
 ___
 ## TF-IDF
 ### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
