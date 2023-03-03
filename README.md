@@ -5,8 +5,10 @@ For testing, I use single machine with Oracle VM Virtual Box, Ubuntu, RAM 4096 m
 ___
 ## Jobs
 - [Word Count](#word-count)
+- [Inverted Index](#inverted-index)
 - [TF-IDF](#tf-idf)
 - [Cross-Correlation](#cross-correlation)
+
 ## Word Count
 This standard job counts how many times each word appears in a text.
 First of all, I have created a python files for mapper and reducer in hadoop-streaming:
@@ -83,6 +85,9 @@ ab 1
 
 As a result we have had [the file](/Word_Count/WordCount) in hdfs, which include each word with a count of repetitions.
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
+___
+## Inverted Index
+
 ___
 ## TF-IDF
 ### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
