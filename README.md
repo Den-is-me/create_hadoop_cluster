@@ -87,7 +87,49 @@ As a result we have had [the file](/Word_Count/WordCount) in hdfs, which include
 *Fun fact: the word "peace" is repeated 110 times, while the word "war" is repeated 297 times.*
 ___
 ## Inverted Index
+An inverted index is an index data structure storing a mapping from content, such as words or numbers, to its locations in a document or a set of documents.
+A record-level inverted index contains a list of references to documents for each word.
+I have taken 4 books in txt format: ['War and Peace'](/War_and_Peace.txt), ['Gone with the wind'](/TF-IDF/Gone_with_the_Wind.txt), ['Harry Potter and philosopher's stone'](/TF-IDF/Harry_Potter_and_PS.txt) and ['Bible'](/TF-IDF/Bible.txt). As a result, I should get an output file with every word in every book with a set of books containing that word.
+```shell
+word    book_1.txt;book_2.txt...
+```
+I have created Mapper and Reducer for this task:
+[**MapIndex.py**](/Inverted_Index/MapIndex.py)
+```python
+#!/usr/bin/python
 
+import sys
+import re
+import os
+
+for line in sys.stdin:
+    file = os.environ['map_input_file']
+    file = os.path.split(file)[-1]
+    for j in line.split():
+        j = re.search(r'[a-zA-Z]+', j)
+        if j:
+            print(j[0].lower() + '\t'  + file)
+
+```
+[**ReduceIndex.py**](/Inverted_Index/ReduceIndex.py)
+```python
+#!/usr/bin/python
+
+import sys
+
+last_word, words_in_books = None, set()
+for line in sys.stdin:
+    word, book = line.split('\t')
+    if last_word and word != last_word:
+        print(last_word + '\t' +  ';'.join(list(words_in_books)))
+        last_word, words_in_books = word, set()
+        words_in_books.add(book)
+    else:
+        last_word = word
+        words_in_books.add(book)
+if last_word:
+    print(last_word + '\t' + ';'.join(list(words_in_books)))
+```
 ___
 ## TF-IDF
 ### Term Frequency - Inverse Document Frequency is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
