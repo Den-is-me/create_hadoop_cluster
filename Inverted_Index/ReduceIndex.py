@@ -14,4 +14,3 @@ for line in sys.stdin:
         words_in_books.add(book)
 if last_word:
      print(last_word + '\t' + ';'.join(list(words_in_books)))
-F
